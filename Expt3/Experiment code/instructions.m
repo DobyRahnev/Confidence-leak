@@ -1,0 +1,56 @@
+function instructions(win)
+
+p = divAtten_getParameters;
+width = 32;
+nGaussianSDs = 6;
+contrastFraction = .2;
+gratingPeriod = 6;
+gratingPeriodUnits = [];
+orientation = 'vertical';
+black = [];
+white = [];
+
+startText= makeTextTexture(win, 'Press the spacebar to begin and to move through the instructions.',p.BGcolor, 20); 
+text1 = 'In this experiment, you will be asked to determine which direction a gabor patch is tilted in\n A gabor patch looks like this:';
+text3 = 'Indicate your answer when the crosshair turns red.  If tilted to the left press the left arrow key.\n  If tilted to the right press the right arrow key.\n  ';
+text2 = 'Keep your eyes fixed on the crosshair in front of you\n two or four patches will appear on screen\n A circle will appear in the position of the patch you are being asked about.\nRemenber that you are being asked about the tilt of the patch, not its location.';
+text4 = 'When the crosshair turns green, rate the visibility of the patch\n To answer low press 1 and to answer high press 2\n Use the numbers at the top of the keyboard, do not use the keypad.';
+text5 = 'First there will be two blocks of easy practice trials with feedback (a high-pitched tone for correct answers and a low-pitched tone for wrong answers)\n followed by the test blocks (with no feedback) which are slightly harder\nIf you do not know the answer, please guess';
+start2Text = makeTextTexture(win, 'Press the spacebar to begin.',p.BGcolor, 24);
+instrText = makeTextTexture(win, text1,p.BGcolor, 20);
+instr2Text = makeTextTexture(win, text2,p.BGcolor, 20);
+instr3Text = makeTextTexture(win, text3,p.BGcolor, 20);
+instr4Text = makeTextTexture(win, text4,p.BGcolor, 20);
+instr5Text = makeTextTexture(win, text5,p.BGcolor, 20);
+Screen('DrawTexture',win, startText);
+Screen('Flip',win);
+KbWait([],2);
+Screen('DrawTexture',win, instrText);
+gaborPatch = makeGaborPatch(width,nGaussianSDs,contrastFraction,gratingPeriod,gratingPeriodUnits,orientation,black,white);
+gaborTex = Screen('MakeTexture', win, gaborPatch);
+Screen('DrawTexture',win,gaborTex,[],CenterRectOnPoint(p.gaborRect, p.x, p.y+100),[]);
+Screen('Flip',win);
+KbWait([],2);
+Screen('DrawTexture',win, instr2Text);
+gaborPatch = makeGaborPatch(width,nGaussianSDs,contrastFraction,gratingPeriod,gratingPeriodUnits,orientation,black,white);
+gaborTex = Screen('MakeTexture', win, gaborPatch);
+Screen('DrawTexture',win,gaborTex,[],CenterRectOnPoint(p.gaborRect, p.x, p.y+100),135);
+Screen('Flip',win);
+KbWait([],2);
+Screen('DrawTexture',win, instr2Text);
+Screen('DrawTexture',win,gaborTex,[],CenterRectOnPoint(p.gaborRect, p.x, p.y+100),45);
+Screen('Flip',win);
+KbWait([],2);
+Screen('DrawTexture',win, instr3Text);
+Screen('Flip',win);
+KbWait([],2);
+Screen('DrawTexture',win, instr4Text);
+Screen('Flip',win);
+KbWait([],2);
+Screen('DrawTexture',win, instr5Text);
+Screen('Flip',win);
+KbWait([],2);
+Screen('DrawTexture',win, start2Text);
+Screen('Flip',win);
+KbWait([],2);
+
