@@ -31,7 +31,7 @@ Includes the codes for model fitting for Experiments 1-3. Here is a guide to the
 
 The data and code are distributed under the most permissive license (MIT). Feel free to use them as you please. If your
 work depends heavily on these codes, please cite the published paper (will include a reference here). Before the paper is
-actually published, you can simply cite these data as 
+actually published, you can simply cite these data as:
 Dobromir Rahnev. (2015). Confidence-leak: Confidence leak paper: data and code. Zenodo. 10.5281/zenodo.18396
 (For instructions on other citation formats, go to: http://dx.doi.org/10.5281/zenodo.18396). 
 
