@@ -2,13 +2,20 @@
 
 clear
 
-%load the data
-load data_for_modeling
-load conf_leak_fit
+% Add path to helper functions
+currentDir = pwd;
+parts = strsplit(currentDir, '/');
+helperFnDir = fullfile(currentDir(1:end-length(parts{end})-length(parts{end-1})-2), 'helperFunctions');
+addpath(genpath(helperFnDir));
 
-%number simulations
+% Load the data
+load data_for_modeling
+load modelFitResults
+
+% Number simulations
 n_trials = 100000;
 
+% Loop through all subjects
 for subject=1:length(d_letter)
     subject
     
@@ -57,13 +64,14 @@ for subject=1:length(d_letter)
 end
 
 %% Check the fits
-conf_leak
+display('------- Comparison between fitted and actual values -------');
+fittedValuesForTheta = conf_leak
 
-[conf_corr_fit' corr_conf']
-mean([conf_corr_fit' corr_conf'])
+individualFittedAndActualConfCorr = [conf_corr_fit' conf_corr']
+averageFittedAndActualConfCorr = mean([conf_corr_fit' conf_corr'])
 
-[conf_bin_fit conf_bin]
-mean([conf_bin_fit conf_bin])
+individualFittedAndActualConfBins = [conf_bin_fit conf_bin]
+averageFittedAndActualConfBins = mean([conf_bin_fit conf_bin])
 
 
 %% Add fits to Figure 2B
@@ -71,5 +79,7 @@ mean([conf_bin_fit conf_bin])
 
 
 %% Save results
-% type2AUC_fit_exp1 = mean(type2AUC,2);
-% save metacog_fit_exp1 type2AUC_fit_exp1
+type2AUC_fit_exp1 = mean(type2AUC,2);
+modelingDir = fullfile(currentDir(1:end-length(parts{end})-length(parts{end-1})-2), 'metacog_analyses');
+fileName = fullfile(modelingDir, 'metacog_fit_exp1.mat');
+save(fileName, 'type2AUC_fit_exp1');

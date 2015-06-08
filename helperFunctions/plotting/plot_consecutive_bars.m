@@ -1,9 +1,8 @@
-function plot_consecutive_bars(data, ylabel_string)
+function plot_consecutive_bars(data, xlabel_string, ylabel_string, plot_ind_data)
 
 number_subjects = size(data,1);
 
 figure
-%ax = axes;
 bar(1, mean(data(:,1),1), 'w');
 hold
 for i=2:size(data,2)
@@ -19,13 +18,15 @@ for i=1:size(data,2)
 %         mean(data(:,i))-std(data(:,i))/sqrt(number_subjects)], 'k');
 %     plot([i-.05,i+.05], [mean(data(:,i))+std(data(:,i))/sqrt(number_subjects), ...
 %         mean(data(:,i))+std(data(:,i))/sqrt(number_subjects)], 'k');
+    if plot_ind_data
+        plot(i, data(:,i), 'kx')
+    end
 end
 
-legend('High attention (2 patches)', 'Low attention (4 patches)');
-%xlabel('Confidence on task 1', 'FontSize',30)
+xlabel(xlabel_string, 'FontSize',30)
 ylabel(ylabel_string, 'FontSize',30);
-xlim([.5, 2.5]);
-% ylim([0, 6]);
+xlim([.5, .5 + size(data,2)]);
+% ylim([0, 1]);
 % set(ax,'XTick',[1:size(data,2)]);
 % set(ax,'YTick',[0 .5 1]);
-%legend('2 patches', '4 patches');
+% legend('condition 1', 'condition 2');

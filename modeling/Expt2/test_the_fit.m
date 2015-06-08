@@ -2,11 +2,17 @@
 
 clear
 
-%load the data
-load data_for_modeling
-load conf_leak_fit
+% Add path to helper functions
+currentDir = pwd;
+parts = strsplit(currentDir, '/');
+helperFnDir = fullfile(currentDir(1:end-length(parts{end})-length(parts{end-1})-2), 'helperFunctions');
+addpath(genpath(helperFnDir));
 
-%number simulations
+% Load the data
+load data_for_modeling
+load modelFitResults
+
+% Number simulations
 n_trials = 100000;
 
 % Parameters for PDF analysis
@@ -15,11 +21,12 @@ N=1000;
 y_bins_all{1} = zeros(N+1,1);
 y_bins_all{2} = zeros(N+1,1);
 
+% Loop through all subjects
 for subject=1:length(d_VAS)
     
     subject
     
-    %Simulate n_trials
+    % Simulate n_trials
     signal_optOut = d_optOut/2 + randn(n_trials,1);
     signal_VAS = d_VAS(subject)/2 + randn(n_trials,1);
     accuracy_optOut_fit = signal_optOut > 0;
@@ -76,37 +83,40 @@ for subject=1:length(d_VAS)
 end
 
 %% Check the fits
-conf_leak
+display('------- Comparison between fitted and actual values -------');
+fittedValuesForTheta = conf_leak
 
-[corr_conf_fit' conf_corr']
-mean([corr_conf_fit' conf_corr'])
+individualFittedAndActualConfCorr = [corr_conf_fit' conf_corr']
+averageFittedAndActualConfCorr = mean([corr_conf_fit' conf_corr'])
 
-[conf_VAS_mean' conf_VAS_fit']
-mean([conf_VAS_mean' conf_VAS_fit'])
+individualFittedAndActualConfOnVAS = [conf_VAS_mean' conf_VAS_fit']
+averageFittedAndActualConfOnVAS = mean([conf_VAS_mean' conf_VAS_fit'])
 
-[conf_optOut_mean' conf_optOut_fit']
-mean([conf_optOut_mean' conf_optOut_fit'])
+individualFittedAndActualConfOnOptOut = [conf_optOut_mean'+1, conf_optOut_fit']
+averageFittedAndActualConfOnOptOut = mean([conf_optOut_mean'+1, conf_optOut_fit'])
 
 
-%% Plot VAS bins as a function of opt out
-% smooth = 50; %The actual moving average is 2*100*smooth/N, which is 10 for smooth=50 and N=1000
-% for i=1:2
-%     for j=1:length(y_bins_all{i})
-%         begin = j - smooth; if begin < 1; begin = 1; end
-%         ending = j + smooth; if ending > N; ending = N; end
-%         y_bins_all_new{i}(j) = mean(y_bins_all{i}(begin:ending));
-%     end
-% end
-% x = (0:1/N:1)';
-% figure
-% plot(100*x,y_bins_all_new{1}/length(d_VAS), 'r', 'LineWidth', 4)
-% hold
-% plot(100*x,y_bins_all_new{2}/length(d_VAS), 'b', 'LineWidth', 4)
-% legend('Low confidence (opted out)', 'High confidence (did not opt out)');
-% xlabel('Confidence on VAS');
-% ylabel('Probability density');
+%% Plot VAS bins as a function of opt out (thin lines in Figure 3)
+smooth = 50; %The actual moving average is 2*100*smooth/N, which is 10 for smooth=50 and N=1000
+for i=1:2
+    for j=1:length(y_bins_all{i})
+        begin = j - smooth; if begin < 1; begin = 1; end
+        ending = j + smooth; if ending > N; ending = N; end
+        y_bins_all_new{i}(j) = mean(y_bins_all{i}(begin:ending));
+    end
+end
+x = (0:1/N:1)';
+figure
+plot(100*x,y_bins_all_new{1}/length(d_VAS), 'r', 'LineWidth', 4)
+hold
+plot(100*x,y_bins_all_new{2}/length(d_VAS), 'b', 'LineWidth', 4)
+legend('Low confidence (opted out)', 'High confidence (did not opt out)');
+xlabel('Confidence on VAS');
+ylabel('Probability density');
 
 
 %% Save results
-% type2AUC_fit_exp2 = type2AUC';
-% save metacog_fit_exp2 type2AUC_fit_exp2
+type2AUC_fit_exp2 = type2AUC';
+modelingDir = fullfile(currentDir(1:end-length(parts{end})-length(parts{end-1})-2), 'metacog_analyses');
+fileName = fullfile(modelingDir, 'metacog_fit_exp2.mat');
+save(fileName, 'type2AUC_fit_exp2');

@@ -1,25 +1,33 @@
-%fit_model
+%run_ModelFitting
 
 clear
 
-%load the data
+% Add path to helper functions
+currentDir = pwd;
+parts = strsplit(currentDir, '/');
+helperFnDir = fullfile(currentDir(1:end-length(parts{end})-length(parts{end-1})-2), 'helperFunctions');
+addpath(genpath(helperFnDir));
+
+% Load the behavioral data with estimated parameters
 load data_for_modeling
 conf2_orig = conf2; conf4_orig = conf4;
 
-%number simulations
+% Number simulations
 n_trials = 50000;
 
+
+% Loop through all subjects
 for subject=1:length(d_prime2)
     
     subject
     
     %Initial conf_leak
-    conf_leak=0;
+    conf_leak=0; %parameter theta in the paper
     step = .2;
     direction=1;
     
     while 1       
-        %Simulate n_trials
+        % Simulate n_trials
         signal2 = d_prime2(subject)/2 + randn(n_trials,1);
         signal4 = d_prime4(subject)/2 + randn(n_trials,1);
         accuracy2_fit = signal2 > 0;
@@ -36,11 +44,11 @@ for subject=1:length(d_prime2)
                 criterion4(subject) / ratio) - 1; %conf is 0 or 1
         end
         
-        %Confidence correlation
+        % Confidence correlation
         all_conf = [conf2'; conf4'];
         conf_corr_fit = r2z(corr(all_conf(1:end-1), all_conf(2:end)));
         
-        if conf_corr_fit < conf_corr(subject) - .001 %mean(corr_conf_cond(subject,:)) - .005;
+        if conf_corr_fit < conf_corr(subject) - .001
             if direction==1
                 conf_leak = conf_leak + step;
             else
@@ -48,7 +56,7 @@ for subject=1:length(d_prime2)
                 step = step/2;
                 conf_leak = conf_leak + step;
             end
-        elseif conf_corr_fit > conf_corr(subject) + .001 %mean(corr_conf_cond(subject,:)) + .005
+        elseif conf_corr_fit > conf_corr(subject) + .001
             if direction==-1
                 conf_leak = conf_leak - step;
             else
@@ -63,5 +71,6 @@ for subject=1:length(d_prime2)
     end
 end
 
+% Save the fitted results
 conf_leak = conf_leak_final;
-save conf_leak_fit conf_leak
+save modelFitResults conf_leak

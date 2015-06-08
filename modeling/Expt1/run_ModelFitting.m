@@ -1,30 +1,38 @@
-%fit_model
+%run_ModelFitting
 
 clear
 
-%load the data
+% Add path to helper functions
+currentDir = pwd;
+parts = strsplit(currentDir, '/');
+helperFnDir = fullfile(currentDir(1:end-length(parts{end})-length(parts{end-1})-2), 'helperFunctions');
+addpath(genpath(helperFnDir));
+
+% Load the behavioral data with estimated parameters
 load data_for_modeling
 
-%number simulations
+% Number simulations
 n_trials = 100000;
 
+
+% Loop through all subjects
 for subject=1:length(d_letter)
     
     subject
     
-    %Initial conf_leak
-    conf_leak=0; %parameter A in the paper
+    % Initialize conf_leak
+    conf_leak=0; %parameter theta in the paper
     step = .2;
     direction=1;
 
     while 1        
-        %Simulate n_trials
+        % Simulate n_trials
         signal_letter = d_letter(subject)/2 + randn(n_trials,1);
         signal_color = d_color(subject)/2 + randn(n_trials,1);
         accuracy_letter_fit = signal_letter > 0;
         accuracy_color_fit = signal_color > 0;
         
-        %Confidence on letter identity predicts confidence on color task
+        % Confidence on letter identity predicts confidence on color task
         conf_letter = give_conf(abs(signal_letter), criteria_letter(subject,:));
         for trial=1:n_trials
             ratio = exp((conf_letter(trial)-mean_conf_letter(subject))*conf_leak);
@@ -32,9 +40,9 @@ for subject=1:length(d_letter)
                 criteria_color(subject,:) / ratio);
         end
         
-        %Confidence correlation
+        % Confidence correlation
         corr_conf_fit = r2z(corr(conf_letter, conf_color'));
-        if corr_conf_fit < corr_conf(subject) - .001;
+        if corr_conf_fit < conf_corr(subject) - .001;
             if direction==1
                 conf_leak = conf_leak + step;
             else
@@ -42,7 +50,7 @@ for subject=1:length(d_letter)
                 step = step/2;
                 conf_leak = conf_leak + step;
             end
-        elseif corr_conf_fit > corr_conf(subject) + .001
+        elseif corr_conf_fit > conf_corr(subject) + .001
             if direction==-1
                 conf_leak = conf_leak - step;
             else
@@ -57,5 +65,6 @@ for subject=1:length(d_letter)
     end
 end
 
+% Save the fitted results
 conf_leak = conf_leak_final;
-%save conf_leak_fit conf_leak
+save modelFitResults conf_leak
