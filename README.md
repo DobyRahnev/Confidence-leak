@@ -33,8 +33,8 @@ The data and code are distributed under the most permissive license (MIT). Feel 
 work depends heavily on these codes, please cite the published paper (will include a reference here). Before the paper is
 actually published, you can simply cite these data as:
 
-Dobromir Rahnev. (2015). Confidence-leak: Confidence leak paper: data and code. Zenodo. 10.5281/zenodo.18396
+Dobromir Rahnev. (2015). Confidence-leak: Data and code. Zenodo. 10.5281/zenodo.18508
 
-(For instructions on other citation formats, go to: http://dx.doi.org/10.5281/zenodo.18396). 
+(For instructions on other citation formats, go to: http://dx.doi.org/10.5281/zenodo.18508). 
 
 If you have any questions, write to Doby Rahnev at drahnev@gmail.com.
