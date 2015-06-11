@@ -1,11 +1,11 @@
 function [d_prime criteria] = estimate_100_std_criteria(stim, resp, conf)
 
-% confidence goes from 0 to 100
-
 % Assume symmetrical criteria for S1 and S2
 HR = sum(stim==max(stim) & resp==max(stim)) / sum(stim==max(stim));
 FAR = sum(stim==min(stim) & resp==max(stim)) / sum(stim==min(stim));
 d_prime = norminv(HR) - norminv(FAR);
+
+% Correct for infinite d' values
 if d_prime > 10
     d_prime = 5;
 end

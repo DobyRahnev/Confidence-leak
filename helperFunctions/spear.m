@@ -118,9 +118,3 @@ for i=1:length(u)
     r(s,1) = mean(r(s));
     
 end
-
-
-
-
-
-

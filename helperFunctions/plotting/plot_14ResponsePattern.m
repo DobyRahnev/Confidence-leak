@@ -1,4 +1,4 @@
-function plot_fig2c(data1, data2)
+function plot_14ResponsePattern(data1, data2)
 
 number_subjects = size(data1,1);
 
