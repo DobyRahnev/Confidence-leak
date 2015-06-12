@@ -1,5 +1,7 @@
 # Confidence-leak
-Data and code for paper "Confidence leak in perceptual decision-making"
+Data and code for paper:
+
+Rahnev, D., Koizumi, A., McCurdy, L.Y., D’Esposito, M., & Lau, H. (in press). Confidence leak in perceptual decision-making. Psychological Science.
 
 All analyses are written in Matlab. Codes are tested on MATLAB R2014b but should work for many previous generations of Matlab.
 Here is a guideline to the files:
@@ -30,11 +32,6 @@ Includes the codes for model fitting for Experiments 1-3. Here is a guide to the
 
 
 The data and code are distributed under the most permissive license (MIT). Feel free to use them as you please. If your
-work depends heavily on these codes, please cite the published paper (will include a reference here). Before the paper is
-actually published, you can simply cite these data as:
-
-Dobromir Rahnev. (2015). Confidence-leak: Data and code. Zenodo. 10.5281/zenodo.18508
-
-(For instructions on other citation formats, go to: http://dx.doi.org/10.5281/zenodo.18508). 
+work depends heavily on these codes, please cite the published paper in Psychological Science (see details above).
 
 If you have any questions, write to Doby Rahnev at drahnev@gmail.com.
