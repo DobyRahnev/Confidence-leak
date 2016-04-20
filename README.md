@@ -1,7 +1,7 @@
 # Confidence-leak
 Data and code for paper:
 
-Rahnev, D., Koizumi, A., McCurdy, L.Y., D’Esposito, M., & Lau, H. (in press). Confidence leak in perceptual decision-making. Psychological Science.
+Rahnev, D., Koizumi, A., McCurdy, L.Y., D’Esposito, M., & Lau, H. (2015). Confidence leak in perceptual decision-making. Psychological Science.
 
 All analyses are written in Matlab. Codes are tested on MATLAB R2014b but should work for many previous generations of Matlab.
 Here is a guideline to the files:
